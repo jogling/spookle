@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ article.title }}</title>
+</head>
+<body class="news-detail">
+    <h1 class="news-detail__title">{{ article.title }}</h1>
+    <p class="news-detail__content">{{ article.content|linebreaks }}</p>
+    <p>{{ article.pub_date }} </p>
+    <p><a href="{% url 'index' %}" class="news-detail__back-link">Back to Home</a></p>
+</body>
+</html>
+{% endblock %}

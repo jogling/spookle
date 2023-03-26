@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Dashboard</h1>
+  <h2>Attending</h2>
+  <ul>
+    {% for event in attending %}
+      <li><a href="{% url 'events_details' event.id %}">{{ event.title }}</a> - {{ event.datetime }}</li>
+    {% empty %}
+      <li>No upcoming events found.</li>
+    {% endfor %}
+  </ul>
+  <h2>Attended</h2>
+  <ul>
+    {% for event in attended %}
+      <li><a href="{% url 'events_details' event.id %}">{{ event.title }}</a> - {{ event.datetime }}</li>
+    {% empty %}
+      <li>No past events found.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

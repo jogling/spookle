@@ -1,0 +1,40 @@
+<!-- {% extends 'base.html' %}
+
+{% block content %}
+  <h1>Upcoming Events</h1>
+  <form method="GET" action="{% url 'events' %}">
+    <input type="text" name="search" placeholder="Search...">
+    <label>Is Free</label>
+    <input type="checkbox" name="is_free" value="True">
+    <button type="submit">Filter</button>
+  </form>
+  {% if events %}
+    <ul>
+      {% for event in events %}
+        <li>
+          <a href="{% url 'events_details' event.id %}">{{ event.title }}</a>
+          <p>{{ event.datetime }}</p>
+          <p>{{ event.description }}</p>
+          <p>Cost: {{ event.cost }}</p>
+          {% if request.user.is_authenticated %}
+            {% if event in request.user.profile.attending.all %}
+              <form method="POST" action="{% url 'events_remove_attending' event.id %}">
+                {% csrf_token %}
+                <button type="submit">Remove Attending</button>
+                <input type="hidden" name="redirect_url" value="{{ request.path }}">
+              </form>
+            {% else %}
+              <form method="POST" action="{% url 'events_add_attending' event.id %}">
+                {% csrf_token %}
+                <button type="submit">Add Attending</button>
+                <input type="hidden" name="redirect_url" value="{{ request.path }}">
+              </form>
+            {% endif %}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No events found.</p>
+  {% endif %}
+{% endblock %} -->

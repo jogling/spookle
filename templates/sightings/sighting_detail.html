@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{ sighting.title }}</h1>
+<p class="card-text sighting-description">{{ sighting.description }}</p>
+<p class="card-text">Location: {{ sighting.location }}</p>
+<p class="card-text">Date and time of sighting: {{ sighting.date }} at {{ sighting.time }}</p>
+<p class="card-text">Type of ghost seen: {{ sighting.ghost_type }}</p>
+<p class="card-text">Reported by: {{ sighting.author }}</p>
+<p class="card-text">Submitted: {{ sighting.created_at|date:'F j, Y, P' }}</p>
+<p class="card-text">Last updated: {{ sighting.updated_at|date:'F j, Y, P' }}</p>
+
+<a href="{% url 'sightings' %}">Back to sightings</a>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="left-col">
+        <h1>Welcome to Spookle</h1>
+        <p>Share your ghostly encounters and browse the experiences of others. Connect with fellow ghost enthusiasts and attend unique ghostly meetups. Here at Spookle, we're all about making connections that are out of this world. Whether you're a seasoned ghost hunter or just a curious skeptic, we welcome you to join our community of believers.</p>
+        <h2>Latest News</h2>
+        <ul class="news-list">
+            {% for article in articles %}
+            <li>
+                <a href="{% url 'news:news_detail' article.id %}">{{ article.title }}</a>
+                <span>{{ article.pub_date|date:"F j, Y" }}</span>
+            </li>
+            {% empty %}
+            <li>No articles found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="index-image">
+        <img src="{% static 'images/pexels-photo-14284317.jpeg' %}" alt="A man wearing a tablecloth and sunglasses peeking out from behind a tree." class="right-col-image">
+    </div>
+</div>
+{% endblock %}

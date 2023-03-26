@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spookle - Living for Ghostly Encounters</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <img src="{% static 'images/logo.png' %}" alt="Spookle Logo" class="navbar-logo">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'sightings' %}">Sightings</a>
+            <a href="{% url 'events' %}">Events</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'contact' %}">Contact</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}?next={% url 'index' %}" class="button button-logout">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="button button-login">Login</a>
+                <a href="{% url 'register' %}" class="button button-signup">Sign Up</a>
+            {% endif %}
+
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Spookle. All rights reserved.</p>
+    </footer>
+</body>
+</html>

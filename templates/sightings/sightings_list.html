@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row">
+    <div class="left-col">
+      <h1>Recent Sightings</h1>
+      <div class="card-container">
+        {% for sighting in sightings %}
+        <div class="card">
+          <div class="card-content">
+            <h2 class="card-title">
+              <a href="{% url 'sighting_detail' sighting.id %}">{{ sighting.title }}</a>
+            </h2>
+            <p class="card-text"><strong>Location:</strong> {{ sighting.location }}</p>
+            <p class="card-text"><strong>Date of sighting:</strong> {{ sighting.date }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      
+      <section>
+        <h2 class="mb-3">Filter Sightings</h2>
+        <form method="get">
+          <div class="form-row">
+            <div class="form-group col-md-4 mb-2">
+              <label for="ghost_type_filter"><strong>Type of ghost:</strong></label>
+              <select name="ghost_type" id="ghost_type_filter" class="form-control">
+                <option value="">All types</option>
+                <option value="apparition">Apparition</option>
+                <option value="poltergeist">Poltergeist</option>
+                <option value="shadow_figure">Shadow figure</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group col-md-4 mb-2">
+              <label for="location_filter"><strong>Location:</strong></label>
+              <select name="location" id="location_filter" class="form-control">
+                <option value="">All locations</option>
+                {% for location in locations %}
+                <option value="{{ location }}">{{ location }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group col-md-4 mb-2">
+              <label for="year_filter"><strong>Year:</strong></label>
+              <select name="year" id="year_filter" class="form-control">
+                <option value="">All years</option>
+                {% for year in years %}
+                <option value="{{ year }}">{{ year }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">Filter</button>
+        </form>
+      </section>
+    </div>
+
+    <div class="right-col">
+      <section>
+        <h2 class="mb-3">Submit a Sighting</h2>
+        <form method="post" class="bg-light p-4 rounded">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="title"><strong>Title:</strong></label>
+            <input type="text" name="title" id="title" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="description"><strong>Description:</strong></label>
+            <textarea name="description" id="description" class="form-control" rows="5"
+              required>{{ sighting.description }}</textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="location"><strong>Location:</strong></label>
+              <input type="text" name="location" id="location" class="form-control" value="{{ sighting.location }}"
+                required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="date"><strong>Date:</strong></label>
+              <input type="date" name="date" id="date" class="form-control" value="{{ sighting.date }}" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="time"><strong>Time:</strong></label>
+            <input type="time" name="time" id="time" class="form-control" value="{{ sighting.time }}">
+          </div>
+          <div class="form-group">
+            <label for="ghost_type"><strong>Type of ghost seen:</strong></label>
+            <select name="ghost_type" id="ghost_type" class="form-control" required>
+              <option value="">Select a type</option>
+              <option value="apparition" {% if sighting.ghost_type == "apparition" %}selected{% endif %}>Apparition
+              </option>
+              <option value="poltergeist" {% if sighting.ghost_type == "poltergeist" %}selected{% endif %}>Poltergeist
+              </option>
+              <option value="shadow_figure" {% if sighting.ghost_type == "shadow_figure" %}selected{% endif %}>Shadow
+                figure</option>
+              <option value="other" {% if sighting.ghost_type == "other" %}selected{% endif %}>Other</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary mt-2">Update</button>
+        </form>
+      </section>
+    </div>
+  </div>
+{% endblock %}

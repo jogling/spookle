@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="left-col">
+      <h1>Upcoming Events</h1>
+      <div class="events-filter-band">        
+        <form method="GET" action="{% url 'events' %}">
+          <div class="filter-container">
+            <div class="search-container">
+              <input type="text" name="search" placeholder="Search...">
+            </div>
+            <div class="checkbox-container">
+              <label>Show free events only</label>
+              <input type="checkbox" name="is_free" value="0">
+            </div>
+            <div class="button-container">
+              <button type="submit">Filter</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      {% if events %}
+        <ul class="event-list">
+          {% for event in events %}
+            <li class="event">
+              <div class="event-details">
+                <a href="{% url 'events_details' event.id %}">{{ event.title }}</a>
+                <p>{{ event.datetime }}</p>
+                <p>£{{ event.cost }}</p>
+                <p>{{ event.description }}</p>
+              </div>
+              {% if request.user.is_authenticated %}
+                <div class="event-actions">
+                  {% if event in request.user.profile.attending.all %}
+                    <form method="POST" action="{% url 'events_remove_attending' event.id %}">
+                      {% csrf_token %}
+                      <button type="submit">Remove Attending</button>
+                      <input type="hidden" name="redirect_url" value="{{ request.path }}">
+                    </form>
+                  {% else %}
+                    <form method="POST" action="{% url 'events_add_attending' event.id %}">
+                      {% csrf_token %}
+                      <button type="submit">Add Attending</button>
+                      <input type="hidden" name="redirect_url" value="{{ request.path }}">
+                    </form>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No events found.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

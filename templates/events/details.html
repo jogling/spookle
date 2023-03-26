@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ event.title }}</h1>
+  <p>{{ event.description }}</p>
+  <p>Date: {{ event.datetime }}</p>
+  <p>Cost: {{ event.cost }}</p>
+  {% if request.user.is_authenticated %}
+    {% if event in request.user.profile.attending.all %}
+      <form method="POST" action="{% url 'events_remove_attending' event.id %}">
+        {% csrf_token %}
+        <button type="submit">Remove Attending</button>
+        <input type="hidden" name="redirect_url" value="{{ request.path }}">
+      </form>
+    {% else %}
+      <form method="POST" action="{% url 'events_add_attending' event.id %}">
+        {% csrf_token %}
+        <button type="submit">Add Attending</button>
+        <input type="hidden" name="redirect_url" value="{{ request.path }}">
+      </form>
+    {% endif %}
+    <h2>Add Review</h2>
+    <form method="POST" action="{% url 'events_add_review' event.id %}">
+      {% csrf_token %}
+      <label for="review-text">Review:</label>
+      <textarea id="review-text" name="review-text"></textarea>
+      <label for="rating">Rating:</label>
+      <select id="rating" name="rating">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+      <button type="submit">Submit Review</button>
+      <input type="hidden" name="redirect_url" value="{{ request.path }}">
+    </form>
+  {% endif %}
+{% endblock %}
